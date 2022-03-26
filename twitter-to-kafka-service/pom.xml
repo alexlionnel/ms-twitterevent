@@ -49,6 +49,14 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -56,6 +64,26 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>alexlionnel/${project.groupId}.twitterevent.${project.artifactId}:${project.version}</name>
+                        <publish>true</publish>
+                    </image>
+                    <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
+                    <docker>
+                        <host>ftp://192.168.64.10:2376</host>
+                        <tlsVerify>true</tlsVerify>
+                        <certPath>/Users/97023r/.minikube/certs</certPath>
+                        <publishRegistry>
+                            <username>alexlionnel</username>
+                            <password>081989Alex</password>
+                            <url>https://index.docker.io/v1/</url>
+                        </publishRegistry>
+                    </docker>
+                </configuration>
             </plugin>
         </plugins>
     </build>
