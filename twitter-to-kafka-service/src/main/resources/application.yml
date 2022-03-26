@@ -8,6 +8,9 @@ spring:
   cloud:
     config:
       username: spring_cloud_config_server_user
-      password: password-config
+      password: '{cipher}f22a63e0a7576d05c62d50a89ea3c905406d67559356af2e594146eda0c451cd'
 server:
   port: 9490
+
+encrypt:
+  key: config-key

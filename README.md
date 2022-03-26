@@ -15,9 +15,15 @@ docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b kafka:29
 docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b kafka:39092
 ```
 
-### Consulter les messages reçues par les brokers
+#### Consulter les messages reçues par les brokers
 ```
 docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -C -b localhost:19092 -t twitter-topic
 docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -C -b localhost:29092 -t twitter-topic
 docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -C -b localhost:39092 -t twitter-topic
+```
+
+#### Encrypter et décrypter un mot de passe en utilisant JCE
+```
+spring encrypt password-config --key config-key
+spring decrypt encrypted-password-config --key config-key
 ```
