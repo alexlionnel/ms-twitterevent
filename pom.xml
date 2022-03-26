@@ -34,6 +34,7 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <spring-cloud.version>3.1.0</spring-cloud.version>
         <spring-cloud-dependencies.version>2021.0.1</spring-cloud-dependencies.version>
+        <jasypt.version>3.0.4</jasypt.version>
     </properties>
 
     <dependencyManagement>
@@ -132,6 +133,12 @@
                 <groupId>org.springframework.retry</groupId>
                 <artifactId>spring-retry</artifactId>
                 <version>${spring-retry.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt.version}</version>
             </dependency>
 
             <dependency>

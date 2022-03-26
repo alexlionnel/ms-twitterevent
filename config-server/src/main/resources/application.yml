@@ -15,11 +15,16 @@ spring:
         git:
           uri: https://github.com/alexlionnel/ms-twitterevent-config-repo.git
           username: alexlionnel
-          password: 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
+          password: ENC(LQ8aAs8NSQgMfnbG6PTjRjO1A2V4q6Xr8CzDkUo6fs25N9buhauSsTC4X94pAQe2svkRNQYUVAJ59Dys1vVi6FVVom70ScDL9x++DOAk0fs=)
           clone-on-start: true
           default-label: main
       fail-fast: true
   security:
     user:
-      name: spring_cloud_config_server_user
-      password: password
+      name: ms-event_config_server_user
+      password: ENC(bWhvyU/1MXEbIBQD4uGs4yUPXClvfbZxtym3yiAldi9loZ1MIAa6rKVJoy5VYTLdFTXaMdm2kuEBzJx56CKBeg==)
+
+jasypt:
+  encryptor:
+    password: key_encrypt_2022
+    algorithm: PBEWITHHMACSHA512ANDAES_256

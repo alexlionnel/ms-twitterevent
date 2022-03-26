@@ -7,7 +7,12 @@ spring:
     import: "optional:configserver:http://localhost:8888"
   cloud:
     config:
-      username: spring_cloud_config_server_user
-      password: password
+      username: ms-event_config_server_user
+      password: ENC(bWhvyU/1MXEbIBQD4uGs4yUPXClvfbZxtym3yiAldi9loZ1MIAa6rKVJoy5VYTLdFTXaMdm2kuEBzJx56CKBeg==)
 server:
   port: 9490
+
+jasypt:
+  encryptor:
+    password: key_encrypt_2022
+    algorithm: PBEWITHHMACSHA512ANDAES_256
