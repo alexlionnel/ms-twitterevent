@@ -8,6 +8,6 @@ spring:
   cloud:
     config:
       username: spring_cloud_config_server_user
-      password: password
+      password: password-config
 server:
   port: 9490
