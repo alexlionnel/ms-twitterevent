@@ -25,4 +25,4 @@ spring:
       password: '{cipher}7790544860577bf8d5c510930b000d6821a6cfa5b3b00bf7f0458ed00c8fd69e'
 
 encrypt:
-  key: config-key
+  key: ${ENCRYPT_KEY}

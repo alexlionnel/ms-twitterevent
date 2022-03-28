@@ -10,9 +10,9 @@ For further reference, please consider the following sections:
 
 #### Vérifier que les brockers sont bien démarrés
 ```
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b kafka:19092
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b kafka:29092
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b kafka:39092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.10:19092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.10:29092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.10:39092
 ```
 
 #### Consulter les messages reçues par les brokers

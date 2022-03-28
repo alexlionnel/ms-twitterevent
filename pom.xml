@@ -8,6 +8,7 @@
         <module>kafka</module>
         <module>common-config</module>
         <module>config-server</module>
+        <module>kafka-to-elastic-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -56,6 +57,11 @@
             <dependency>
                 <groupId>io.demobrains</groupId>
                 <artifactId>kafka-admin</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.demobrains</groupId>
+                <artifactId>kafka-consumer</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
