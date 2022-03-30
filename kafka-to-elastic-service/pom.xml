@@ -29,6 +29,18 @@
             <artifactId>common-config</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.demobrains</groupId>
+            <artifactId>elastic-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.demobrains</groupId>
+            <artifactId>elastic-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.demobrains</groupId>
+            <artifactId>elastic-index-client</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
@@ -73,7 +85,7 @@
                         <enabled>true</enabled>
                     </layers>
                     <docker>
-                        <host>ftp://192.168.64.10:2376</host>
+                        <host>ftp://192.168.64.11:2376</host>
                         <tlsVerify>true</tlsVerify>
                         <certPath>/Users/97023r/.minikube/certs</certPath>
                         <publishRegistry>
@@ -83,6 +95,24 @@
                         </publishRegistry>
                     </docker>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <copy file="target/${project.artifactId}-${project.version}.jar" tofile="../docker/${project.artifactId}/${project.artifactId}.jar"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

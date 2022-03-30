@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  elastic-1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
+    hostname: elastic-1
+    environment:
+      - node.name=elastic-1
+      - cluster.name=es-twitter-cluster
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=password
+      - xpack.security.enabled=false
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    healthcheck:
+      test: [ "CMD", "curl", "--output", "/dev/null", "--silent", "--head", "--fail", "http://elastic-1:9200/_cat/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+    networks:
+      - ${GLOBAL_NETWORK:-elastic}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+
+volumes:
+  data01:
+    driver: local

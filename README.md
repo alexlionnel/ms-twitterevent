@@ -10,9 +10,9 @@ For further reference, please consider the following sections:
 
 #### Vérifier que les brockers sont bien démarrés
 ```
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.10:19092
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.10:29092
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.10:39092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.11:19092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.11:29092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.11:39092
 ```
 
 #### Consulter les messages reçues par les brokers
@@ -26,4 +26,12 @@ docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -C -b localhos
 ```
 spring encrypt password-config --key config-key
 spring decrypt encrypted-password-config --key config-key
+```
+
+#### Démarrage de minikube + docker avec la configuration nécessaire ####
+```
+brew install minikube
+brew install docker
+brew install docker-compose
+minikube start --memory 8192 --cpus 2
 ```

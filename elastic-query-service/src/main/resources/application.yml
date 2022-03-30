@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: elastic-query
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://192.168.64.11:8888"
+  cloud:
+    config:
+      username: spring_cloud_config_server_user
+      password: '{cipher}f22a63e0a7576d05c62d50a89ea3c905406d67559356af2e594146eda0c451cd'
+
+server:
+  port: 9492
+  servlet:
+    context-path: /elastic-query
+
+encrypt:
+  key: ${ENCRYPT_KEY}

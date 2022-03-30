@@ -45,7 +45,7 @@
                         <enabled>true</enabled>
                     </layers>
                     <docker>
-                        <host>tcp://192.168.64.10:2376</host>
+                        <host>tcp://192.168.64.11:2376</host>
                         <tlsVerify>true</tlsVerify>
                         <certPath>/Users/97023r/.minikube/certs</certPath>
                         <publishRegistry>

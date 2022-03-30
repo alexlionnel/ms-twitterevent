@@ -2,7 +2,11 @@ package io.demobrains.twitterevent.kafka.to.elastic.service.consumer.impl;
 
 import io.demobrains.twitterevent.dataconfig.config.KafkaConfigData;
 import io.demobrains.twitterevent.dataconfig.config.KafkaConsumerConfigData;
+import io.demobrains.twitterevent.elasticclient.service.ElasticIndexClient;
+import io.demobrains.twitterevent.elasticclient.util.ElasticIndexUtil;
+import io.demobrains.twitterevent.elasticmodel.impl.TwitterIndexModel;
 import io.demobrains.twitterevent.kafka.to.elastic.service.consumer.KafkaConsumer;
+import io.demobrains.twitterevent.kafka.to.elastic.service.transformer.AvroToElasticModelTransformer;
 import io.demobrains.twitterevent.kafkaadmin.client.KafkaAdminClient;
 import io.deobrains.twitterevent.kafkamodel.avro.model.TwitterAvroModel;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,8 @@ public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroMode
     private final KafkaAdminClient kafkaAdminClient;
     private final KafkaConfigData kafkaConfigData;
     private final KafkaConsumerConfigData kafkaConsumerConfigData;
+    private final AvroToElasticModelTransformer avroToElasticModelTransformer;
+    private final ElasticIndexClient<TwitterIndexModel> elasticIndexClient;
 
     @EventListener
     public void onAppStarted(ApplicationStartedEvent event) {
@@ -52,6 +58,9 @@ public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroMode
                 partitions.toString(),
                 offsets.toString(),
                 Thread.currentThread().getId());
+        List<TwitterIndexModel> elasticModels = avroToElasticModelTransformer.getElasticModels(messages);
+        List<String> documentIds = elasticIndexClient.save(elasticModels);
+        LOG.info("Documents saved to elasticsearch with ids {}", documentIds);
     }
 
 }
