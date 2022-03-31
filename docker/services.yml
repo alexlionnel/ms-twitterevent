@@ -5,7 +5,6 @@ services:
     #image: alexlionnel/${GROUP_ID}.twitter-to-kafka-service:${SERVICE_VERSION:-latest}
     build: ./twitter-to-kafka-service
     ports:
-      - "5005:5005"
       - "9490:9490"
     environment:
       - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
@@ -29,7 +28,6 @@ services:
     #image: ${GROUP_ID}/kafka.to.elastic.service:${SERVICE_VERSION:-latest}
     build: ./kafka-to-elastic-service
     ports:
-      - "5006:5006"
       - "9491:9491"
     volumes:
       - "./docker-logs:/workspace/kafka-to-elastic-service/logs"
@@ -39,7 +37,7 @@ services:
       config-server:
         condition: service_healthy
       twitter-to-kafka-service:
-        condition: service_healthy
+        condition: service_started
       schema-registry:
         condition: service_healthy
       elastic-1:
@@ -61,11 +59,8 @@ services:
     #image: alexlionnel/${GROUP_ID}.config-server:${SERVICE_VERSION:-latest}
     build: ./config-server
     ports:
-      - "5006:5006"
       - "8888:8888"
     environment:
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
-
-

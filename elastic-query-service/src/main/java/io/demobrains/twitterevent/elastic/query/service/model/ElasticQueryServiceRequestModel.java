@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ElasticQueryServiceRequestModel {
     private String id;
-    private Long userId;
+    @NotEmpty
     private String text;
-    private LocalDateTime createdAt;
 }

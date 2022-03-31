@@ -3,7 +3,6 @@ package io.demobrains.twitterevent.kafka.to.elastic.service.consumer.impl;
 import io.demobrains.twitterevent.dataconfig.config.KafkaConfigData;
 import io.demobrains.twitterevent.dataconfig.config.KafkaConsumerConfigData;
 import io.demobrains.twitterevent.elasticclient.service.ElasticIndexClient;
-import io.demobrains.twitterevent.elasticclient.util.ElasticIndexUtil;
 import io.demobrains.twitterevent.elasticmodel.impl.TwitterIndexModel;
 import io.demobrains.twitterevent.kafka.to.elastic.service.consumer.KafkaConsumer;
 import io.demobrains.twitterevent.kafka.to.elastic.service.transformer.AvroToElasticModelTransformer;
@@ -26,7 +25,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroModel> {
+public class TwitterKafkaConsumer implements KafkaConsumer<TwitterAvroModel> {
 
     private static final Logger LOG = LoggerFactory.getLogger(TwitterKafkaConsumer.class);
 
@@ -40,17 +39,16 @@ public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroMode
     @EventListener
     public void onAppStarted(ApplicationStartedEvent event) {
         kafkaAdminClient.checkTopicsCreated();
-        LOG.info("Topics with name {} is ready for operation!", kafkaConfigData.getTopicNamesToCreate().toArray());
+        LOG.info("Topics with name {} is ready for operations!", kafkaConfigData.getTopicNamesToCreate().toArray());
         Objects.requireNonNull(kafkaListenerEndpointRegistry.getListenerContainer(kafkaConsumerConfigData.getConsumerGroupId())).start();
     }
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.consumer-group-id}", topics = "${kafka-config.topic-name}")
     public void receive(@Payload List<TwitterAvroModel> messages,
-                        @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<Integer> keys,
+                        @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) List<Long> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION_ID) List<Integer> partitions,
                         @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
-
         LOG.info("{} number of message received with keys {}, partitions {} and offsets {}, " +
                         "sending it to elastic: Thread id {}",
                 messages.size(),
@@ -58,9 +56,11 @@ public class TwitterKafkaConsumer implements KafkaConsumer<Long, TwitterAvroMode
                 partitions.toString(),
                 offsets.toString(),
                 Thread.currentThread().getId());
-        List<TwitterIndexModel> elasticModels = avroToElasticModelTransformer.getElasticModels(messages);
-        List<String> documentIds = elasticIndexClient.save(elasticModels);
-        LOG.info("Documents saved to elasticsearch with ids {}", documentIds);
+        List<TwitterIndexModel> twitterIndexModels = avroToElasticModelTransformer.getElasticModels(messages);
+        List<String> documentIds = elasticIndexClient.save(twitterIndexModels);
+        LOG.info("Documents saved to elasticsearch with ids {}", documentIds.toArray());
     }
+
+
 
 }
