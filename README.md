@@ -10,9 +10,9 @@ For further reference, please consider the following sections:
 
 #### Vérifier que les brockers sont bien démarrés
 ```
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.11:19092
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.11:29092
-docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b 192.168.64.11:39092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b localhost:19092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b localhost:29092
+docker run --tty --network=host confluentinc/cp-kafkacat kafkacat -L -b localhost:39092
 ```
 
 #### Consulter les messages reçues par les brokers
@@ -33,5 +33,31 @@ spring decrypt encrypted-password-config --key config-key
 brew install minikube
 brew install docker
 brew install docker-compose
+brew install cask virtualbox
 minikube start --memory 8192 --cpus 2
+minikube start --driver=virtualbox --memory 8192 --cpus 2
+
+#documentation tiré de http://tdongsi.github.io/blog/2018/12/31/minikube-in-corporate-vpn/
+
+#configuration de virtual box
+VBoxManage controlvm minikube natpf1 k8s-apiserver,tcp,127.0.0.1,8443,,8443
+VBoxManage controlvm minikube natpf1 k8s-dashboard,tcp,127.0.0.1,30000,,30000
+VBoxManage controlvm minikube natpf1 jenkins,tcp,127.0.0.1,30080,,30080
+VBoxManage controlvm minikube natpf1 docker,tcp,127.0.0.1,2376,,2376
+
+#contexte pour le vpn
+kubectl config set-cluster minikube-vpn --server=https://127.0.0.1:8443 --insecure-skip-tls-verify
+kubectl config set-context minikube-vpn --cluster=minikube-vpn --user=minikube
+
+#swith ver le context
+kubectl config use-context minikube-vpn
+
+# mise à jour variable environnement
+eval $(minikube docker-env)
+export DOCKER_HOST="tcp://127.0.0.1:2376"
+alias dockervpn="docker --tlsverify=false"
+
+# utilisation du contexte hors vpn
+kubectl config use-context minikube
+
 ```
