@@ -12,6 +12,7 @@
         <module>elastic</module>
         <module>common-util</module>
         <module>elastic-query-service</module>
+        <module>elastic-query-web-client</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -40,6 +41,7 @@
         <spring-cloud-dependencies.version>2021.0.1</spring-cloud-dependencies.version>
         <elastic.version>7.15.2</elastic.version>
         <guava.version>31.1-jre</guava.version>
+        <springdoc-openapi-ui.version>1.6.6</springdoc-openapi-ui.version>
     </properties>
 
     <dependencyManagement>
@@ -169,6 +171,12 @@
                 <groupId>org.springframework.retry</groupId>
                 <artifactId>spring-retry</artifactId>
                 <version>${spring-retry.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi-ui.version}</version>
             </dependency>
 
             <dependency>

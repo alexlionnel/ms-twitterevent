@@ -18,11 +18,9 @@ public class ElasticQueryServiceResponseModelAssembler extends RepresentationMod
 
     private final ElasticToResponseModelTransformer elasticToResponseModelTransformer;
 
-    public ElasticQueryServiceResponseModelAssembler(Class<?> controllerClass,
-                                                     Class<ElasticQueryServiceResponseModel> resourceType,
-                                                     ElasticToResponseModelTransformer elasticToResponseModelTransformer) {
-        super(controllerClass, resourceType);
-        this.elasticToResponseModelTransformer = elasticToResponseModelTransformer;
+    public ElasticQueryServiceResponseModelAssembler(ElasticToResponseModelTransformer transformer) {
+        super(ElasticDocumentController.class, ElasticQueryServiceResponseModel.class);
+        this.elasticToResponseModelTransformer = transformer;
     }
 
     @Override

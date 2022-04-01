@@ -31,13 +31,10 @@ services:
       - "9491:9491"
     volumes:
       - "./docker-logs:/workspace/kafka-to-elastic-service/logs"
-      - "./check-kafka-topics-created.sh:/usr/local/bin/check-kafka-topics-created.sh"
     user: root
     depends_on:
       config-server:
         condition: service_healthy
-      twitter-to-kafka-service:
-        condition: service_started
       schema-registry:
         condition: service_healthy
       elastic-1:
@@ -51,6 +48,31 @@ services:
       - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
       - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
+      - "ENCRYPT_KEY=config-key"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+
+  elastic-query-service:
+    #image: ${GROUP_ID}/elastic.query.service:${SERVICE_VERSION:-latest}
+    build: ./elastic-query-service
+    ports:
+      - "9492:9492"
+    volumes:
+      - "./docker-logs:/workspace/elastic-query-service/logs"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+      elastic-1:
+        condition: service_healthy
+    environment:
+      - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
+      - "LOGGING_LEVEL_ROOT=info"
+      - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
+      - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
+      - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-service"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}

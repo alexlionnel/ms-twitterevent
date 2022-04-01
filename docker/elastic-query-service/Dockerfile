@@ -1,5 +1,5 @@
 FROM adoptopenjdk/openjdk11
-EXPOSE 9491
+EXPOSE 9492
 
 ENV TZ=Europe/Moscow
 
@@ -8,6 +8,6 @@ RUN apt-get update \
 
 ENV APP_HOME=/usr/app
 WORKDIR $APP_HOME
-COPY kafka-to-elastic-service.jar app.jar
+COPY elastic-query-service.jar app.jar
 
 ENTRYPOINT ["java","-jar","app.jar"]
