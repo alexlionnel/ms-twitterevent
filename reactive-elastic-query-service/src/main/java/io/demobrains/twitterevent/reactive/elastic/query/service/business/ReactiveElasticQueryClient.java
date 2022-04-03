@@ -6,4 +6,5 @@ import reactor.core.publisher.Flux;
 public interface ReactiveElasticQueryClient<T extends IndexModel> {
 
     Flux<T> getIndexModelByText(String text);
+    Flux<T> getAllIndexModel();
 }

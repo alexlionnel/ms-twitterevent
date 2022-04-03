@@ -26,4 +26,9 @@ public class TwitterReativeElasticQueryClient implements ReactiveElasticQueryCli
                 .findByText(text)
                 .delayElements(Duration.ofMillis(elasticQueryServiceConfigData.getBackPressureDelayMs()));
     }
+
+    @Override
+    public Flux<TwitterIndexModel> getAllIndexModel() {
+        return elasticQueryRepository.findAll();
+    }
 }

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: reactive-elastic-query
+    name: reactive-elastic-query-web-client
   profiles:
     active: dev
   config:
@@ -11,8 +11,9 @@ spring:
       password: '{cipher}f22a63e0a7576d05c62d50a89ea3c905406d67559356af2e594146eda0c451cd'
       allow-override: true
       override-none: true
+
 server:
-  port: 9492
+  port: 9493
 
 encrypt:
   key: ${ENCRYPT_KEY}

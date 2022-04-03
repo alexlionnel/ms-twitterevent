@@ -25,4 +25,11 @@ public class TwitterElasticQueryService implements ElasticQueryService {
                 .getIndexModelByText(text)
                 .map(elasticToResponseModelTransformer::getResponseModel);
     }
+
+    @Override
+    public Flux<ElasticQueryServiceResponseModel> getAllDocuments() {
+        return reactiveElasticQueryClient
+                .getAllIndexModel()
+                .map(elasticToResponseModelTransformer::getResponseModel);
+    }
 }
