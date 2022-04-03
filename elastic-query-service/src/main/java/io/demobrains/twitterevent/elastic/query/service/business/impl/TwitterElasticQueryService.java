@@ -1,9 +1,8 @@
 package io.demobrains.twitterevent.elastic.query.service.business.impl;
 
 import io.demobrains.twitterevent.elastic.query.service.business.ElasticQueryService;
-import io.demobrains.twitterevent.elastic.query.service.model.ElasticQueryServiceResponseModel;
+import io.demobrains.twitterevent.elastic.query.service.common.model.ElasticQueryServiceResponseModel;
 import io.demobrains.twitterevent.elastic.query.service.model.assembler.ElasticQueryServiceResponseModelAssembler;
-import io.demobrains.twitterevent.elastic.query.service.transformer.ElasticToResponseModelTransformer;
 import io.demobrains.twitterevent.elasticmodel.impl.TwitterIndexModel;
 import io.demobrains.twitterevent.elasticqueryclient.service.ElasticQueryClient;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package io.demobrains.twitterevent.elastic.query.service.business;
 
-import io.demobrains.twitterevent.elastic.query.service.model.ElasticQueryServiceResponseModel;
+import io.demobrains.twitterevent.elastic.query.service.common.model.ElasticQueryServiceResponseModel;
 
 import java.util.List;
 

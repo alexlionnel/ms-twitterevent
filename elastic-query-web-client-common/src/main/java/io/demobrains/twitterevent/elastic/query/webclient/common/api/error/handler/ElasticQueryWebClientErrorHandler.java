@@ -1,6 +1,6 @@
-package io.demobrains.twitterevent.elastic.query.webclient.api.error.handler;
+package io.demobrains.twitterevent.elastic.query.webclient.common.api.error.handler;
 
-import io.demobrains.twitterevent.elastic.query.webclient.model.ElasticQueryWebClientRequestModel;
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientRequestModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

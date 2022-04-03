@@ -1,4 +1,4 @@
-package io.demobrains.twitterevent.elastic.query.service.transformer;
+package io.demobrains.twitterevent.elastic.query.service.common.transformer;
 
 import io.demobrains.twitterevent.elastic.query.service.common.model.ElasticQueryServiceResponseModel;
 import io.demobrains.twitterevent.elasticmodel.impl.TwitterIndexModel;

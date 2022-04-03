@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: reactive-elastic-query
+  profiles:
+    active: dev
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  cloud:
+    config:
+      username: spring_cloud_config_server_user
+      password: '{cipher}f22a63e0a7576d05c62d50a89ea3c905406d67559356af2e594146eda0c451cd'
+      allow-override: true
+      override-none: true
+server:
+  port: 9492

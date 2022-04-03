@@ -1,4 +1,4 @@
-package io.demobrains.twitterevent.elastic.query.webclient.model;
+package io.demobrains.twitterevent.elastic.query.webclient.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

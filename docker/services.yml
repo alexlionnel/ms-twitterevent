@@ -1,6 +1,16 @@
 version: '3.9'
 
 services:
+  config-server:
+    #image: alexlionnel/${GROUP_ID}.config-server:${SERVICE_VERSION:-latest}
+    build: ./config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - "ENCRYPT_KEY=config-key"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+
   twitter-to-kafka-service:
     #image: alexlionnel/${GROUP_ID}.twitter-to-kafka-service:${SERVICE_VERSION:-latest}
     build: ./twitter-to-kafka-service
@@ -31,7 +41,6 @@ services:
       - "9491:9491"
     volumes:
       - "./docker-logs:/workspace/kafka-to-elastic-service/logs"
-    user: root
     depends_on:
       config-server:
         condition: service_healthy
@@ -77,12 +86,24 @@ services:
     networks:
       - ${GLOBAL_NETWORK:-services}
 
-  config-server:
-    #image: alexlionnel/${GROUP_ID}.config-server:${SERVICE_VERSION:-latest}
-    build: ./config-server
+  elastic-query-web-client:
+    #image: ${GROUP_ID}/elastic.query.web.client:${SERVICE_VERSION:-latest}
+    build: ./elastic-query-web-client
     ports:
-      - "8888:8888"
+      - "9493:9493"
+    volumes:
+      - "./docker-logs:/workspace/elastic-query-web-client/logs"
+    depends_on:
+      config-server:
+        condition: service_healthy
+      elastic-1:
+        condition: service_healthy
     environment:
+      - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
+      - "LOGGING_LEVEL_ROOT=info"
+      - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-web-client"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_BASE-URL=http://elastic-query-service/elastic-query-service/documents"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}

@@ -1,9 +1,9 @@
 package io.demobrains.twitterevent.elastic.query.webclient.service.impl;
 
 import io.demobrains.twitterevent.dataconfig.config.ElasticQueryWebClientConfigData;
-import io.demobrains.twitterevent.elastic.query.webclient.exception.ElasticQueryWebClientException;
-import io.demobrains.twitterevent.elastic.query.webclient.model.ElasticQueryWebClientRequestModel;
-import io.demobrains.twitterevent.elastic.query.webclient.model.ElasticQueryWebClientResponseModel;
+import io.demobrains.twitterevent.elastic.query.webclient.common.exception.ElasticQueryWebClientException;
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientRequestModel;
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.service.ElasticQueryWebClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,7 +45,7 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
                 .method(HttpMethod.valueOf(elasticQueryWebClientConfigData.getQueryByText().getMethod()))
                 .uri(elasticQueryWebClientConfigData.getQueryByText().getUri())
                 .accept(MediaType.valueOf(elasticQueryWebClientConfigData.getQueryByText().getAccept()))
-                .body(BodyInserters.fromPublisher(Mono.just(requestModel), new ParameterizedTypeReference<>() {}))
+                .body(BodyInserters.fromPublisher(Mono.just(requestModel), new ParameterizedTypeReference<ElasticQueryWebClientRequestModel>() {}))
                 .retrieve()
                 .onStatus(
                         httpStatus -> httpStatus.equals(HttpStatus.UNAUTHORIZED),

@@ -1,7 +1,7 @@
 package io.demobrains.twitterevent.elastic.query.webclient.api;
 
-import io.demobrains.twitterevent.elastic.query.webclient.model.ElasticQueryWebClientRequestModel;
-import io.demobrains.twitterevent.elastic.query.webclient.model.ElasticQueryWebClientResponseModel;
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientRequestModel;
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.service.ElasticQueryWebClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

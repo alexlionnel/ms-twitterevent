@@ -1,4 +1,4 @@
-package io.demobrains.twitterevent.elastic.query.webclient.exception;
+package io.demobrains.twitterevent.elastic.query.webclient.common.exception;
 
 public class ElasticQueryWebClientException extends RuntimeException {
 
