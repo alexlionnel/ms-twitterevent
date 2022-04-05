@@ -11,4 +11,5 @@ public class ElasticQueryServiceConfigData {
 
     private String version;
     private Long backPressureDelayMs;
+    private String customAudience;
 }

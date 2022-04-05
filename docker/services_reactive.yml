@@ -24,7 +24,6 @@ services:
       - "KAFKA-CONFIG_SCHEMA-REGISTRY-URL=http://schema-registry:8081"
       - "TWITTER-TO-KAFKA-SERVICE_ENABLE-MOCK-TWEETS=false"
       - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -54,7 +53,7 @@ services:
       - "KAFKA-CONFIG_TOPIC-NAME=twitter-topic"
       - "KAFKA-CONFIG_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
       - "KAFKA-CONFIG_SCHEMA-REGISTRY-URL=http://schema-registry:8081"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
       - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
       - "ENCRYPT_KEY=config-key"
@@ -63,11 +62,9 @@ services:
 
   elastic-query-service:
     #image: ${GROUP_ID}/elastic.query.service:${SERVICE_VERSION:-latest}
-    build: ./elastic-query-service
+    build: ./reactive-elastic-query-service
     ports:
       - "9492:9492"
-    profiles:
-      - donostart
     volumes:
       - "./docker-logs:/workspace/elastic-query-service/logs"
     depends_on:
@@ -83,18 +80,16 @@ services:
       - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
       - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-service"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
   elastic-query-web-client:
     #image: ${GROUP_ID}/elastic.query.web.client:${SERVICE_VERSION:-latest}
-    build: ./elastic-query-web-client
+    build: ./reactive-elastic-query-web-client
     ports:
       - "9493:9493"
-    profiles:
-      - donostart
     volumes:
       - "./docker-logs:/workspace/elastic-query-web-client/logs"
     depends_on:
@@ -106,7 +101,7 @@ services:
       - "LOGGING_LEVEL_COM_MICROSERVICES_DEMO=info"
       - "LOGGING_LEVEL_ROOT=info"
       - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-web-client"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
       - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_BASE-URL=http://elastic-query-service/elastic-query-service/documents"
       - "ENCRYPT_KEY=config-key"
     networks:

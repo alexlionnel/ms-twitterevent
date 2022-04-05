@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  keycloak-authorization-server:
+    image: quay.io/keycloak/keycloak:${KEYCLOAK_VERSION:-latest}
+    hostname: keycloak-server
+    ports:
+      - "8082:8082"
+    profiles:
+      - donotstart
+    depends_on:
+      postgres-keycloak:
+        condition: service_healthy
+    environment:
+      - "KEYCLOAK_USER=admin"
+      - "KEYCLOAK_PASSWORD=admin"
+      - "JAVA_OPTS=-Djboss.http.port=8082"
+      - "DB_VENDOR=POSTGRES"
+      - "DB_ADDR=postgres-keycloak"
+      - "DB_DATABASE=keycloak"
+      - "DB_USER=keycloak"
+      - "DB_SCHEMA=keycloak"
+      - "DB_PASSWORD=keycloak"
+    volumes:
+      - keycloak_data:/opt/jboss/keycloak/standalone/data/
+    networks:
+      - ${GLOBAL_NETWORK:-keycloak}
+
+  postgres-keycloak:
+    image: postgres
+    ports:
+      - "5436:5432"
+    profiles:
+      - donotstart
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+      POSTGRES_DB: keycloak
+      PGDATA: /data/postgres
+    volumes:
+      - postgres_data:/data/postgres
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - ${GLOBAL_NETWORK:-keycloak}
+
+volumes:
+  postgres_data:
+  keycloak_data:
