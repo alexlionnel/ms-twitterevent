@@ -2,7 +2,7 @@ package io.demobrains.twitterevent.elastic.query.service.model.assembler;
 
 import io.demobrains.twitterevent.elastic.query.service.api.ElasticDocumentController;
 import io.demobrains.twitterevent.elastic.query.service.common.model.ElasticQueryServiceResponseModel;
-import io.demobrains.twitterevent.elastic.query.service.transformer.ElasticToResponseModelTransformer;
+import io.demobrains.twitterevent.elastic.query.service.common.transformer.ElasticToResponseModelTransformer;
 import io.demobrains.twitterevent.elasticmodel.impl.TwitterIndexModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
