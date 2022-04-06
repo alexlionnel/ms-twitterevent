@@ -46,6 +46,7 @@
         <elastic.version>7.15.2</elastic.version>
         <guava.version>31.1-jre</guava.version>
         <springdoc-openapi-ui.version>1.6.6</springdoc-openapi-ui.version>
+        <postgresql.version>42.3.3</postgresql.version>
     </properties>
 
     <dependencyManagement>
@@ -210,6 +211,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
             </dependency>
 
             <dependency>

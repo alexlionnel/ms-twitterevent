@@ -1,15 +1,26 @@
 package io.demobrains.twitterevent.elastic.query.service.security;
 
+import io.demobrains.twitterevent.elastic.query.service.business.QueryUserService;
+import io.demobrains.twitterevent.elastic.query.service.transformer.UserPermissionsToUserDetailTransformer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TwitterQueryUserDetailsService implements UserDetailsService {
+
+    private final QueryUserService queryUserService;
+    private final UserPermissionsToUserDetailTransformer userPermissionsToUserDetailTransformer;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return TwitterQueryUser.builder().username(username).build();
+        return queryUserService
+                .findAllPermissionsByUsername(username)
+                .map(userPermissionsToUserDetailTransformer::getUserDetails)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("No user found with name " + username));
     }
 }

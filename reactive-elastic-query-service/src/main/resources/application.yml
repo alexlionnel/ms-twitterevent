@@ -11,6 +11,10 @@ spring:
       password: '{cipher}f22a63e0a7576d05c62d50a89ea3c905406d67559356af2e594146eda0c451cd'
       allow-override: true
       override-none: true
+
+  codec:
+    max-in-memory-size: 500MB
+
 server:
   port: 9492
 

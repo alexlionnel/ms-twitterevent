@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class TwitterElasticQueryService implements ElasticQueryService {
         log.info("Querying reactive elasticsearch by text {}", text);
         return reactiveElasticQueryClient
                 .getIndexModelByText(text)
+                .doOnNext(e -> log.info("Getting element {}", e.toString()))
                 .map(elasticToResponseModelTransformer::getResponseModel);
     }
 

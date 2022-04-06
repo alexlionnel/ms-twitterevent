@@ -65,6 +65,8 @@ services:
     build: ./reactive-elastic-query-service
     ports:
       - "9492:9492"
+    profiles:
+      - donotstart
     volumes:
       - "./docker-logs:/workspace/elastic-query-service/logs"
     depends_on:
@@ -81,6 +83,7 @@ services:
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
       - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-service"
       - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
+      - "SPRING_ELASTICSEARCH_URIS=http://elastic-1:9200"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -90,6 +93,8 @@ services:
     build: ./reactive-elastic-query-web-client
     ports:
       - "9493:9493"
+    profiles:
+      - donotstart
     volumes:
       - "./docker-logs:/workspace/elastic-query-web-client/logs"
     depends_on:
