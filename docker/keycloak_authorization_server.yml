@@ -6,6 +6,11 @@ services:
     hostname: keycloak-server
     ports:
       - "8082:8082"
+    #healthcheck:
+      #test: [ "CMD", "curl", "--output", "/dev/null", "--silent", "--head", "--fail", "http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm" ]
+      #interval: 10s
+      #timeout: 5s
+      #retries: 5
     profiles:
       - donotstart
     depends_on:
@@ -34,8 +39,8 @@ services:
       - donotstart
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U keycloak"]
-      interval: 10s
-      timeout: 5s
+      interval: 7s
+      timeout: 4s
       retries: 5
     environment:
       POSTGRES_USER: keycloak

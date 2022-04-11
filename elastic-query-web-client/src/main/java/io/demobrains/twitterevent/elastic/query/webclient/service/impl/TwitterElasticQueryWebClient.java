@@ -2,6 +2,7 @@ package io.demobrains.twitterevent.elastic.query.webclient.service.impl;
 
 import io.demobrains.twitterevent.dataconfig.config.ElasticQueryWebClientConfigData;
 import io.demobrains.twitterevent.elastic.query.webclient.common.exception.ElasticQueryWebClientException;
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientAnalyticsResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientRequestModel;
 import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.service.ElasticQueryWebClient;
@@ -32,11 +33,10 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
     }
 
     @Override
-    public List<ElasticQueryWebClientResponseModel> getDataByText(ElasticQueryWebClientRequestModel requestModel) {
+    public ElasticQueryWebClientAnalyticsResponseModel getDataByText(ElasticQueryWebClientRequestModel requestModel) {
         log.info("Querying by text {}", requestModel.getText());
         return getWebClient(requestModel)
-                .bodyToFlux(ElasticQueryWebClientResponseModel.class)
-                .collectList()
+                .bodyToMono(ElasticQueryWebClientAnalyticsResponseModel.class)
                 .block();
     }
 

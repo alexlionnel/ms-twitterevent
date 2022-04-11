@@ -2,6 +2,7 @@ package io.demobrains.twitterevent.elastic.query.service.security;
 
 import io.demobrains.twitterevent.elastic.query.service.common.model.ElasticQueryServiceRequestModel;
 import io.demobrains.twitterevent.elastic.query.service.common.model.ElasticQueryServiceResponseModel;
+import io.demobrains.twitterevent.elastic.query.service.model.ElasticQueryServiceAnalyticsResponseModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -37,10 +38,10 @@ public class QueryServicePermissionEvaluator implements PermissionEvaluator {
             if (targetDomain == null) {
                 return true;
             }
-            List<ElasticQueryServiceResponseModel> responseBody =
-                    ((ResponseEntity<List<ElasticQueryServiceResponseModel>>) targetDomain).getBody();
+            ElasticQueryServiceAnalyticsResponseModel responseBody =
+                    ((ResponseEntity<ElasticQueryServiceAnalyticsResponseModel>) targetDomain).getBody();
             Objects.requireNonNull(responseBody);
-            return postAuthorize(authentication, responseBody, permission);
+            return postAuthorize(authentication, responseBody.getQueryResponseModels(), permission);
         }
         return false;
     }

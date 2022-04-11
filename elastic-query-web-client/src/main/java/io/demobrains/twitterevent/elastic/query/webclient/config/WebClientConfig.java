@@ -1,7 +1,6 @@
 package io.demobrains.twitterevent.elastic.query.webclient.config;
 
 import io.demobrains.twitterevent.dataconfig.config.ElasticQueryWebClientConfigData;
-import io.demobrains.twitterevent.dataconfig.config.UserConfigData;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -27,7 +26,7 @@ public class WebClientConfig {
     @Value("${security.default-client-registration-id}")
     private String defaultClientRegistrationId;
 
-    public WebClientConfig(ElasticQueryWebClientConfigData elasticQueryWebClientConfigData, UserConfigData userConfigData) {
+    public WebClientConfig(ElasticQueryWebClientConfigData elasticQueryWebClientConfigData) {
         this.elasticQueryWebClientConfigData = elasticQueryWebClientConfigData.getWebClient();
     }
 

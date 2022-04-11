@@ -1,5 +1,6 @@
 package io.demobrains.twitterevent.elastic.query.webclient.api;
 
+import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientAnalyticsResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientRequestModel;
 import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.service.ElasticQueryWebClient;
@@ -39,8 +40,9 @@ public class QueryController {
     @PostMapping("/query-by-text")
     public String queryByText(@Valid ElasticQueryWebClientRequestModel requestModel, Model model) {
         log.info("Querying with text {}", requestModel.getText());
-        List<ElasticQueryWebClientResponseModel> responseModels = elasticQueryWebClient.getDataByText(requestModel);
-        model.addAttribute("elasticQueryWebClientResponseModels", responseModels);
+        var responseModels = elasticQueryWebClient.getDataByText(requestModel);
+        model.addAttribute("elasticQueryWebClientResponseModels", responseModels.getQueryResponseModels());
+        model.addAttribute("wordCount", responseModels.getWordCount());
         model.addAttribute("searchText", requestModel.getText());
         model.addAttribute("elasticQueryWebClientRequestModel", requestModel);
         return "home";
