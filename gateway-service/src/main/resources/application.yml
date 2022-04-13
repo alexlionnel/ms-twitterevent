@@ -29,3 +29,6 @@ encrypt:
 
 server:
   port: 9590
+
+log:
+  app-name: gateway-service

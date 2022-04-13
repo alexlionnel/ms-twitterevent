@@ -20,3 +20,6 @@ server:
 
 encrypt:
   key: ${ENCRYPT_KEY}
+
+log:
+  app-name: reactive-elastic-query-service

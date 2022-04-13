@@ -1,12 +1,26 @@
 version: '3.9'
 
 services:
-  config-server:
+  config-server-1:
     #image: alexlionnel/${GROUP_ID}.config-server:${SERVICE_VERSION:-latest}
     build: ./config-server
     ports:
       - "8888:8888"
     environment:
+      - "SERVER_PORT=8888"
+      - "LOG_APP-NAME=config-server-1"
+      - "ENCRYPT_KEY=config-key"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+
+  config-server-2:
+    #image: alexlionnel/${GROUP_ID}.config-server:${SERVICE_VERSION:-latest}
+    build: ./config-server
+    ports:
+      - "8889:8889"
+    environment:
+      - "SERVER_PORT=8889"
+      - "LOG_APP-NAME=config-server-2"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -24,13 +38,13 @@ services:
       - "KAFKA-CONFIG_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
       - "KAFKA-CONFIG_SCHEMA-REGISTRY-URL=http://schema-registry:8081"
       - "TWITTER-TO-KAFKA-SERVICE_ENABLE-MOCK-TWEETS=false"
-      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
     depends_on:
-      config-server:
+      config-server-1:
         condition: service_healthy
       schema-registry:
         condition: service_healthy
@@ -43,7 +57,7 @@ services:
     volumes:
       - "./docker-logs:/workspace/kafka-to-elastic-service/logs"
     depends_on:
-      config-server:
+      config-server-1:
         condition: service_healthy
       schema-registry:
         condition: service_healthy
@@ -55,7 +69,8 @@ services:
       - "KAFKA-CONFIG_TOPIC-NAME=twitter-topic"
       - "KAFKA-CONFIG_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
       - "KAFKA-CONFIG_SCHEMA-REGISTRY-URL=http://schema-registry:8081"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
       - "ENCRYPT_KEY=config-key"
@@ -70,7 +85,7 @@ services:
     volumes:
       - "./docker-logs:/workspace/elastic-query-service/logs"
     depends_on:
-      config-server:
+      config-server-1:
         condition: service_healthy
       schema-registry:
         condition: service_healthy
@@ -82,7 +97,8 @@ services:
       - "ELASTIC-CONFIG_INDEX-NAME=twitter-index"
       - "ELASTIC-CONFIG_CONNECTION-URL=http://elastic-1:9200"
       - "SERVER_SERVLET_CONTEXT-PATH=/"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm"
       - "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm/protocol/openid-connect/certs"
       - "SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_TOKEN-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm/protocol/openid-connect/token"
@@ -103,7 +119,7 @@ services:
     volumes:
       - "./docker-logs:/workspace/elastic-query-web-client/logs"
     depends_on:
-      config-server:
+      config-server-1:
         condition: service_healthy
       elastic-1:
         condition: service_healthy
@@ -111,7 +127,8 @@ services:
       - "LOGGING_LEVEL_IO_DEMOBRAINS_TWITTEREVENT=info"
       - "LOGGING_LEVEL_ROOT=info"
       - "SERVER_SERVLET_CONTEXT-PATH=/elastic-query-web-client"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "ELASTIC-QUERY-WEB-CLIENT_WEB-CLIENT_BASE-URL=http://gateway-service/elastic-query-service/documents"
       - "SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER-URI=http://keycloak-authorization-server:8082/auth/realms/microservices-realm"
       - "SECURITY_LOGOUT-SUCCESS-URL=http://elastic-query-web-client:9493/elastic-query-web-client"
@@ -129,7 +146,7 @@ services:
     volumes:
       - "./docker-logs:/workspace/kafka-streams-service/logs"
     depends_on:
-      config-server:
+      config-server-1:
         condition: service_healthy
     profiles:
       - donotstart
@@ -138,7 +155,8 @@ services:
       - "LOGGING_LEVEL_ROOT=debug"
       - "SERVER_PORT=9494"
       - "SERVER_SERVLET_CONTEXT-PATH=/"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm"
       - "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm/protocol/openid-connect/certs"
       - "KAFKA-CONFIG_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
@@ -156,7 +174,7 @@ services:
     volumes:
       - "./docker-logs:/workspace/analytics-service/logs"
     depends_on:
-      config-server:
+      config-server-1:
         condition: service_healthy
     profiles:
       - donotstart
@@ -165,7 +183,8 @@ services:
       - "LOGGING_LEVEL_ROOT=info"
       - "SERVER_PORT=8188"
       - "SERVER_SERVLET_CONTEXT-PATH=/"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm"
       - "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://keycloak-authorization-server:8082/auth/realms/twitterevent_realm/protocol/openid-connect/certs"
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-keycloak:5432/postgres?currentSchema=analytics&binaryTransfer=true&reWriteBatchedInserts=true"
@@ -190,6 +209,7 @@ services:
       - "LOGGING_LEVEL_ROOT=info"
       - "SERVER_PORT=8761"
       - "SPRING_PROFILES_ACTIVE=peer1"
+      - "LOG_APP-NAME=discovery-service-1"
       - "EUREKA_INSTANCE_HOSTNAME=discovery-service-1"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8761/eureka/,http://discovery-service-2:8762/eureka/"
     networks:
@@ -210,12 +230,13 @@ services:
       - "LOGGING_LEVEL_ROOT=info"
       - "SERVER_PORT=8762"
       - "SPRING_PROFILES_ACTIVE=peer2"
+      - "LOG_APP-NAME=discovery-service-2"
       - "EUREKA_INSTANCE_HOSTNAME=discovery-service-2"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-1:8762/eureka/,http://discovery-service-2:8761/eureka/"
     networks:
       - ${GLOBAL_NETWORK:-services}
 
-  gateway-service:
+  gateway-service-1:
     image: ${GROUP_ID}/gateway.service:${SERVICE_VERSION:-latest}
     ports:
       - "9590:9590"
@@ -227,10 +248,33 @@ services:
       - "redis-master:redis"
     environment:
       - "LOGGING_LEVEL_ROOT=debug"
-      - "SERVER_PORT=9090"
-      - "SPRING_CLOUD_CONFIG_URI=http://config-server:8888"
-      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888"
+      - "SERVER_PORT=9590"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
       - "SPRING_REDIS_HOST=redis"
+      - "LOG_APP-NAME=gateway-service-1"
+      - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-2:8762/eureka/,http://discovery-service-1:8761/eureka/"
+      - "ENCRYPT_KEY=config-key"
+    networks:
+      - ${GLOBAL_NETWORK:-services}
+
+  gateway-service-2:
+    image: ${GROUP_ID}/gateway.service:${SERVICE_VERSION:-latest}
+    ports:
+      - "9591:9591"
+    profiles:
+      - donotstart
+    volumes:
+      - "./docker-logs:/workspace/gateway-service/logs"
+    links:
+      - "redis-master:redis"
+    environment:
+      - "LOGGING_LEVEL_ROOT=debug"
+      - "SERVER_PORT=9591"
+      - "SPRING_CONFIG_IMPORT=optional:configserver:http://config-server-1:8888,optional:configserver:http://config-server-2:8889"
+      - "SPRING_CLOUD_CONFIG_URI=http://config-server-1:8888,http://config-server-2:8889"
+      - "SPRING_REDIS_HOST=redis"
+      - "LOG_APP-NAME=gateway-service-2"
       - "EUREKA_CLIENT_SERVICE-URL_DEFAULT-ZONE=http://discovery-service-2:8762/eureka/,http://discovery-service-1:8761/eureka/"
       - "ENCRYPT_KEY=config-key"
     networks:

@@ -16,3 +16,6 @@ server:
 
 encrypt:
   key: ${ENCRYPT_KEY}
+
+log:
+  app-name: twitter-to-kafka-service
