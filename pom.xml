@@ -21,6 +21,7 @@
         <module>analytics-service</module>
         <module>discovery-service</module>
         <module>gateway-service</module>
+        <module>mdc-interceptor</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -56,7 +57,15 @@
         <postgresql.version>42.3.3</postgresql.version>
         <spring-cloud-starter-circuitbreaker-reactor-resilience4j.version>2.1.1</spring-cloud-starter-circuitbreaker-reactor-resilience4j.version>
         <micrometer-registry-prometheus.version>1.8.4</micrometer-registry-prometheus.version>
+        <logstash-logback-encoder.version>7.0.1</logstash-logback-encoder.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -118,6 +127,11 @@
             <dependency>
                 <groupId>io.demobrains</groupId>
                 <artifactId>elastic-query-web-client-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.demobrains</groupId>
+                <artifactId>mdc-interceptor</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -317,6 +331,13 @@
                 <artifactId>micrometer-registry-prometheus</artifactId>
                 <version>${micrometer-registry-prometheus.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback-encoder.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

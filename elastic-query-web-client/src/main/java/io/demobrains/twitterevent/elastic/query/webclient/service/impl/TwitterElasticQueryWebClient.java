@@ -7,6 +7,7 @@ import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQu
 import io.demobrains.twitterevent.elastic.query.webclient.common.model.ElasticQueryWebClientResponseModel;
 import io.demobrains.twitterevent.elastic.query.webclient.service.ElasticQueryWebClient;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+
+import static io.demobrains.twitterevent.mdc.Constants.CORRELATION_ID_HEADER;
+import static io.demobrains.twitterevent.mdc.Constants.CORRELATION_ID_KEY;
 
 @Service
 @Slf4j
@@ -45,6 +49,7 @@ public class TwitterElasticQueryWebClient implements ElasticQueryWebClient {
                 .method(HttpMethod.valueOf(elasticQueryWebClientConfigData.getQueryByText().getMethod()))
                 .uri(elasticQueryWebClientConfigData.getQueryByText().getUri())
                 .accept(MediaType.valueOf(elasticQueryWebClientConfigData.getQueryByText().getAccept()))
+                .header(CORRELATION_ID_HEADER, MDC.get(CORRELATION_ID_KEY))
                 .body(BodyInserters.fromPublisher(Mono.just(requestModel), new ParameterizedTypeReference<ElasticQueryWebClientRequestModel>() {}))
                 .retrieve()
                 .onStatus(

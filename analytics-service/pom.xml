@@ -29,6 +29,10 @@
             <artifactId>kafka-consumer</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.demobrains</groupId>
+            <artifactId>mdc-interceptor</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
         </dependency>

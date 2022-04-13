@@ -11,6 +11,7 @@ import io.demobrains.twitterevent.elastic.query.service.model.assembler.ElasticQ
 import io.demobrains.twitterevent.elasticmodel.impl.TwitterIndexModel;
 import io.demobrains.twitterevent.elasticqueryclient.service.ElasticQueryClient;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+
+import static io.demobrains.twitterevent.mdc.Constants.CORRELATION_ID_HEADER;
+import static io.demobrains.twitterevent.mdc.Constants.CORRELATION_ID_KEY;
 
 @Service
 @Slf4j
@@ -93,7 +97,10 @@ public class TwitterElasticQueryService implements ElasticQueryService {
                 .build()
                 .method(HttpMethod.valueOf(query.getMethod()))
                 .uri(query.getUri(), uriBuilder -> uriBuilder.build(text))
-                .headers(h -> h.setBearerAuth(accessToken))
+                .headers(h -> {
+                    h.setBearerAuth(accessToken);
+                    h.set(CORRELATION_ID_HEADER, MDC.get(CORRELATION_ID_KEY));
+                })
                 .accept(MediaType.valueOf(query.getAccept()))
                 .retrieve()
                 .onStatus(

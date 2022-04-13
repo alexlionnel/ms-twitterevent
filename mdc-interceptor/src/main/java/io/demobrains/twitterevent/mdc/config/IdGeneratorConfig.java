@@ -1,4 +1,4 @@
-package io.demobrains.twitterevent.commonconfig.config;
+package io.demobrains.twitterevent.mdc.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

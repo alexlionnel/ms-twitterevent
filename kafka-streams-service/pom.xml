@@ -25,6 +25,10 @@
             <artifactId>kafka-admin</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.demobrains</groupId>
+            <artifactId>mdc-interceptor</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-streams</artifactId>
         </dependency>
