@@ -77,6 +77,7 @@ services:
       - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
       - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
       - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "SPRING_ELASTICSEARCH_URIS=elastic-1:9200"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
@@ -113,6 +114,7 @@ services:
       - "SPRING_ZIPKIN_SENDER_TYPE=kafka"
       - "SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka-broker-1:9092, kafka-broker-2:9092, kafka-broker-3:9092"
       - "SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0"
+      - "SPRING_ELASTICSEARCH_URIS=elastic-1:9200"
       - "ENCRYPT_KEY=config-key"
     networks:
       - ${GLOBAL_NETWORK:-services}
