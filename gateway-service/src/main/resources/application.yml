@@ -8,7 +8,7 @@ spring:
   profiles:
     active: dev
   config:
-    import: "optional:configserver:http://localhost:8888"
+    import: "configserver:"
   cloud:
     config:
       username: spring_cloud_config_server_user
